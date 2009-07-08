@@ -35,7 +35,7 @@ VALUE rb_cCallback;
 
 static ID id_call;
 
-callback_alloc( VALUE klass)
+callback_alloc( VALUE klass )
 {
     NEWOBJ(cb, struct RCallback);
     OBJSETUP(cb, klass, T_CALLBACK);
@@ -66,11 +66,17 @@ static VALUE rb_callback_initialize( int argc, VALUE *argv, VALUE cb )
 	  RCALLBACK(cb)->object = object;
 	  RCALLBACK(cb)->method = rb_to_id(method);
     }
+	return cb;
 }
 
 static VALUE rb_callback_call( VALUE cb, VALUE args )
 {
 	return rb_funcall2(RCALLBACK(cb)->object, RCALLBACK(cb)->method, -1, &args); 
+}
+
+static VALUE rb_f_callback( int argc, VALUE *argv )
+{
+	return rb_callback_initialize( argc, argv, rb_callback_new() );
 }
 
 void
@@ -84,4 +90,5 @@ Init_callback()
     rb_define_method(rb_cCallback,"initialize", rb_callback_initialize, -1);
     rb_define_method(rb_cCallback,"call", rb_callback_call, -2);
 
+    rb_define_global_function("Callback", rb_f_callback, -1);
 }	
