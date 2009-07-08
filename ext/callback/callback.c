@@ -1,27 +1,5 @@
 #include "ruby.h"
 
-/*
-
-class Callback
-  def initialize(object = nil, method = :call, &b)
-    @object, @method = object, method
-    @object ||= b
-  end
-  
-  def call(*args)
-    @object.__send__(@method, *args)
-  end
-end
-
-module Kernel
-  private
-  def Callback(object = nil, method = :call, &b)
-    Callback.new(object, method, &b)
-  end
-end
-
-*/
-
 struct RCallback {
     struct RBasic basic;
     VALUE object;
@@ -29,24 +7,25 @@ struct RCallback {
 };
 
 #define RCALLBACK(obj)  (R_CAST(RCallback)(obj))
-#define T_CALLBACK   0x0f
 
 VALUE rb_cCallback;
 
 static ID id_call;
 
+static VALUE callback_alloc _((VALUE));
+static VALUE
 callback_alloc( VALUE klass )
 {
     NEWOBJ(cb, struct RCallback);
-    OBJSETUP(cb, klass, T_CALLBACK);
+    OBJSETUP(cb, klass, T_BLKTAG); /* trick gc_mark_children */
 
     cb->object = Qnil;
-	cb->method = Qnil;
+	cb->method = 0;
 	
     return (VALUE)cb;
 }
 
-VALUE
+static VALUE
 rb_callback_new()
 {
     return callback_alloc(rb_cCallback);
@@ -66,6 +45,7 @@ static VALUE rb_callback_initialize( int argc, VALUE *argv, VALUE cb )
 	  RCALLBACK(cb)->object = object;
 	  RCALLBACK(cb)->method = rb_to_id(method);
     }
+	OBJ_FREEZE(cb);
 	return cb;
 }
 
