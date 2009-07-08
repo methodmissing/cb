@@ -17,7 +17,8 @@ static VALUE
 callback_alloc( VALUE klass )
 {
     NEWOBJ(cb, struct RCallback);
-    OBJSETUP(cb, klass, T_BLKTAG); /* trick gc_mark_children */
+    /* !!!! trick gc_mark_children for the time being ... need to mark the object struct member */
+    OBJSETUP(cb, klass, T_BLKTAG); 
 
     cb->object = Qnil;
 	cb->method = 0;
