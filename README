@@ -24,6 +24,8 @@ implementation of the following Ruby code :
     end
   end
 
+Concept, ideas and API design James's - any pointers for better GC integration much appreciated.
+
 Examples :
 
   'hai'.callback(:gsub).call('h', 'b') #=> 'bai'
@@ -38,3 +40,4 @@ To run the test suite:
 To run the benchmarks:
 
   rake bench
+
