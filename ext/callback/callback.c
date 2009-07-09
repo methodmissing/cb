@@ -18,8 +18,11 @@ callback_alloc( VALUE klass )
 {
     NEWOBJ(cb, struct RCallback);
     /* trick gc_mark_children */
+#ifdef RUBY18
     OBJSETUP(cb, klass, T_BLKTAG); 
-
+#else
+    OBJSETUP(cb, klass, T_NONE);
+#endif
     cb->object = Qnil;
 	cb->method = 0;
 	
