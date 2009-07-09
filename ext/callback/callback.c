@@ -7,6 +7,11 @@ struct RCallback {
 };
 
 #define RCALLBACK(obj)  (R_CAST(RCallback)(obj))
+#ifdef RUBY18
+#define T_CALLBACK T_BLKTAG
+#else
+#define T_CALLBACK T_NONE
+#endif
 
 VALUE rb_cCallback;
 
@@ -18,11 +23,8 @@ callback_alloc( VALUE klass )
 {
     NEWOBJ(cb, struct RCallback);
     /* trick gc_mark_children */
-#ifdef RUBY18
-    OBJSETUP(cb, klass, T_BLKTAG); 
-#else
-    OBJSETUP(cb, klass, T_NONE);
-#endif
+    OBJSETUP(cb, klass, T_CALLBACK);
+
     cb->object = Qnil;
 	cb->method = 0;
 	
