@@ -17,4 +17,10 @@ class TestCallback < Test::Unit::TestCase
     assert_equal 'hai', cb.call( 'b', 'h' )
   end
   
+  def test_arguments
+    assert_raises ArgumentError do
+      Callback( 'hai' ){}
+    end
+  end
+  
 end

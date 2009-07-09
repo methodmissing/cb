@@ -17,7 +17,7 @@ static VALUE
 callback_alloc( VALUE klass )
 {
     NEWOBJ(cb, struct RCallback);
-    /* !!!! trick gc_mark_children for the time being ... need to mark the object struct member */
+    /* trick gc_mark_children */
     OBJSETUP(cb, klass, T_BLKTAG); 
 
     cb->object = Qnil;
@@ -38,7 +38,7 @@ static VALUE rb_callback_initialize( int argc, VALUE *argv, VALUE cb )
 	VALUE method;
 	 
 	if (rb_block_given_p()) {
-  	  if (argc > 1) rb_raise(rb_eArgError, "wrong number of arguments");
+  	  if (argc == 1) rb_raise(rb_eArgError, "wrong number of arguments");
 	  RCALLBACK(cb)->object = rb_block_proc();
 	  RCALLBACK(cb)->method = id_call;
     }else {
@@ -46,6 +46,8 @@ static VALUE rb_callback_initialize( int argc, VALUE *argv, VALUE cb )
 	  RCALLBACK(cb)->object = object;
 	  RCALLBACK(cb)->method = rb_to_id(method);
     }
+	rb_gc_mark(RCALLBACK(cb)->object);
+	rb_gc_mark(RCALLBACK(cb)->method);	
 	OBJ_FREEZE(cb);
 	return cb;
 }
