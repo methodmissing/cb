@@ -64,4 +64,5 @@ task :setup => %w(clean build install)
 desc "run benchmarks"
 task :bench do |t|
   sh "ruby bench/bench.rb"  
+  sh "ruby bench/raggi_bench.rb"
 end
