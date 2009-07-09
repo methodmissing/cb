@@ -1,0 +1,40 @@
+Simple native Callback object for Ruby MRI
+  (c) 2009 Lourens Naudé (methodmissing), James Tucker (raggi) and coderrr
+ 
+  http://github.com/methodmissing/callback
+
+This library works with Ruby 1.8 ( Ruby 1.9 support is pending ) and is a more efficient
+implementation of the following Ruby code :
+
+  class RubyCallback
+    def initialize(object = nil, method = :call, &b)
+      @object, @method = object, method
+      @object ||= b
+    end
+  
+    def call(*args)
+      @object.__send__(@method, *args)
+    end
+  end
+
+  module Kernel
+    private
+    def RubyCallback(object = nil, method = :call, &b)
+      RubyCallback.new(object, method, &b)
+    end
+  end
+
+Examples :
+
+  'hai'.callback(:gsub).call('h', 'b') #=> 'bai'
+  Callback( 'bai', :to_s ).call #=> 'hai'
+  Callback{ 'hai' }.call #=> 'hai'
+  Callback( 'bai', :gsub ).call( 'b', 'h' ) #=> 'hai'
+
+To run the test suite:
+
+  rake
+
+To run the benchmarks:
+
+  rake bench
