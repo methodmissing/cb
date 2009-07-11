@@ -11,12 +11,6 @@ VALUE rb_cCallback;
 
 static ID id_call;
 
-static void mark_callback(RCallback* cb)
-{
-     rb_gc_mark(cb->method);
-     rb_gc_mark(cb->object);
-}
-
 static void free_callback(RCallback* cb)
 {
     xfree(cb);
@@ -28,7 +22,7 @@ callback_alloc( VALUE klass )
 {
 	VALUE cb;
 	RCallback* cbs;
-	cb = Data_Make_Struct(klass, RCallback, mark_callback, free_callback, cbs);
+	cb = Data_Make_Struct(klass, RCallback, 0, free_callback, cbs);
     cbs->object = Qnil;
 	cbs->method = 0;
 	
@@ -48,23 +42,23 @@ static VALUE rb_callback_initialize( int argc, VALUE *argv, VALUE cb )
 	RCallback* cbs = GetCallbackStruct(cb);
 	 
 	if (rb_block_given_p()) {
-  	  if (argc == 1) rb_raise(rb_eArgError, "wrong number of arguments");
-	  cbs->object = rb_block_proc();
-	  cbs->method = id_call;
+	  if (argc == 1) rb_raise(rb_eArgError, "wrong number of arguments");
+	    cbs->object = rb_block_proc();
+	    cbs->method = id_call;
     }else {
-	  rb_scan_args(argc, argv, "02", &object, &method);
-	  cbs->object = object;
-	  cbs->method = rb_to_id(method);
+	    rb_scan_args(argc, argv, "02", &object, &method);
+	    cbs->object = object;
+	    cbs->method = rb_to_id(method);
     }
 
 	OBJ_FREEZE(cb);
 	return cb;
 }
 
-static VALUE rb_callback_call( VALUE cb, VALUE *args )
+static VALUE rb_callback_call( VALUE cb, VALUE args )
 {
 	RCallback* cbs = GetCallbackStruct(cb);
-	return rb_funcall2(cbs->object, cbs->method, -1, &args); 
+	return rb_apply(cbs->object, cbs->method, args); 
 }
 
 static VALUE rb_f_callback( int argc, VALUE *argv )
