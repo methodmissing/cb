@@ -11,6 +11,11 @@ VALUE rb_cCallback;
 
 static ID id_call;
 
+static void mark_callback(RCallback* cb)
+{
+     rb_gc_mark(cb->object);
+}
+
 static void free_callback(RCallback* cb)
 {
     xfree(cb);
@@ -22,7 +27,7 @@ callback_alloc( VALUE klass )
 {
 	VALUE cb;
 	RCallback* cbs;
-	cb = Data_Make_Struct(klass, RCallback, 0, free_callback, cbs);
+	cb = Data_Make_Struct(klass, RCallback, mark_callback, free_callback, cbs);
     cbs->object = Qnil;
 	cbs->method = 0;
 	
