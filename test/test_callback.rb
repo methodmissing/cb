@@ -36,4 +36,10 @@ class TestCallback < Test::Unit::TestCase
     assert_equal 'hai', ocb.call('b', 'h')
   end  
   
+  def test_invalid_method
+    assert_raises ArgumentError do
+      'str'.callback(:undefined)
+    end
+  end
+  
 end

@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "callback"
-  s.version  = "1.0.0"
+  s.version  = "1.0.1"
   s.date     = "2009-08-22"
   s.summary  = "Native MRI callback"
   s.email    = "lourens@methodmissing.com"
@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
     bench/raggi_bench.rb
     ext/callback/extconf.rb
     ext/callback/callback.c
-    lib/callback.rb
     callback.gemspec
   ] + Dir.glob('test/*')
   s.rdoc_options = ["--main", "README"]

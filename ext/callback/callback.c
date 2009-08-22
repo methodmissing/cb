@@ -1,5 +1,9 @@
 #include "ruby.h"
 
+#ifndef RSTRING_PTR
+#define RSTRING_PTR(obj) RSTRING(obj)->ptr
+#endif
+
 typedef struct {
     VALUE object;
 	ID method;
@@ -43,6 +47,7 @@ static VALUE rb_callback_initialize( int argc, VALUE *argv, VALUE cb )
 {
 	VALUE object;
 	VALUE method;
+	ID meth;
 	RCallback* cbs = GetCallbackStruct(cb);
 	 
 	if (rb_block_given_p()) {
@@ -52,7 +57,9 @@ static VALUE rb_callback_initialize( int argc, VALUE *argv, VALUE cb )
     }else {
 	    rb_scan_args(argc, argv, "02", &object, &method);
 	    cbs->object = object;
-	    cbs->method = rb_to_id(method);
+	    meth = rb_to_id(method);
+	    if (!rb_respond_to(object,meth)) rb_raise(rb_eArgError, "object does not respond to %s", RSTRING_PTR(rb_obj_as_string(method)));
+	    cbs->method = meth;
     }
 
 	OBJ_FREEZE(cb);
