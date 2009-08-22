@@ -1,4 +1,5 @@
 require "benchmark"
+$:.unshift "."
 require File.dirname(__FILE__) + "/../ext/callback/callback"
 require File.dirname(__FILE__) + "/pure_ruby_cb"
 

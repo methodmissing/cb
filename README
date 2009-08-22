@@ -3,7 +3,7 @@ Simple native Callback object for Ruby MRI
  
   http://github.com/methodmissing/callback
 
-This library works with Ruby 1.8 ( Ruby 1.9 support is pending ) and is a more efficient
+This library works with Ruby 1.8 and 1.9 and is a more efficient
 implementation of the following Ruby code :
 
   class RubyCallback
@@ -40,4 +40,3 @@ To run the test suite:
 To run the benchmarks:
 
   rake bench
-

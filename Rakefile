@@ -53,7 +53,7 @@ desc "compile"
 task :build => %w(build:compile)
 
 task :install do |t|
-  Dir.chdir(AIO_ROOT) do
+  Dir.chdir(CB_ROOT) do
     sh 'sudo make install'
   end
 end
@@ -63,6 +63,7 @@ task :setup => %w(clean build install)
 
 desc "run benchmarks"
 task :bench do |t|
-  sh "ruby bench/bench.rb"  
-  sh "ruby bench/raggi_bench.rb"
+  ruby "bench/bench.rb"  
+  ruby "bench/raggi_bench.rb"
 end
+task :bench => :build

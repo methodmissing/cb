@@ -8,12 +8,11 @@ typedef struct {
 #define GetCallbackStruct(obj)	(Check_Type(obj, T_DATA), (RCallback*)DATA_PTR(obj))
 
 VALUE rb_cCallback;
-
 static ID id_call;
 
 static void mark_callback(RCallback* cb)
 {
-     rb_gc_mark(cb->object);
+    rb_gc_mark(cb->object);
 }
 
 static void free_callback(RCallback* cb)
@@ -83,9 +82,9 @@ rb_obj_callback( VALUE obj, VALUE mid)
 void
 Init_callback()
 {
-	id_call = rb_intern("call");
-	
-	rb_cCallback  = rb_define_class("Callback", rb_cObject);
+    id_call = rb_intern("call");
+ 
+    rb_cCallback  = rb_define_class("Callback", rb_cObject);
     rb_define_alloc_func(rb_cCallback, callback_alloc);
     
     rb_define_method(rb_cCallback,"initialize", rb_callback_initialize, -1);
