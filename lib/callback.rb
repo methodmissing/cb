@@ -1,4 +1,7 @@
-require 'mri_callback'
+begin
+  require 'mri_callback'
+rescue LoadError
+end
 
 # A simple __send__ based callback implementation, simply Object Orients
 # something equivalent to:
