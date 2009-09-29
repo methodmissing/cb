@@ -1,25 +1,31 @@
+# -*- encoding: utf-8 -*-
+
 Gem::Specification.new do |s|
-  s.name     = "callback"
-  s.version  = "1.0.1"
-  s.date     = "2009-08-22"
-  s.summary  = "Native MRI callback"
-  s.email    = "lourens@methodmissing.com"
-  s.homepage = "http://github.com/methodmissing/callback"
-  s.description = "Simple native Callback object for Ruby MRI (1.8.{6,7} and 1.9.2)"
-  s.has_rdoc = true
-  s.authors  = ["Lourens Naudé (methodmissing)","James Tucker (raggi)"]
-  s.platform = Gem::Platform::RUBY
-  s.files    = %w[
-    README
-    Rakefile
-    bench/bench.rb
-    bench/pure_ruby_cb.rb
-    bench/raggi_bench.rb
-    ext/callback/extconf.rb
-    ext/callback/callback.c
-    callback.gemspec
-  ] + Dir.glob('test/*')
-  s.rdoc_options = ["--main", "README"]
+  s.name = %q{callback}
+  s.version = "1.0.1"
+
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.authors = ["Lourens Naud\303\251 (methodmissing)", "James Tucker (raggi)"]
+  s.date = %q{2009-08-22}
+  s.description = %q{Simple native Callback object for Ruby MRI (1.8.{6,7} and 1.9.2)}
+  s.email = %q{lourens@methodmissing.com}
+  s.extensions = ["ext/mri_callback/extconf.rb"]
   s.extra_rdoc_files = ["README"]
-  s.extensions << "ext/callback/extconf.rb"
+  s.files = ["README", "Rakefile", "bench/bench.rb", "bench/pure_ruby_cb.rb", "bench/raggi_bench.rb", "ext/mri_callback/extconf.rb", "ext/mri_callback/mri_callback.c", "lib/callback.rb", "test/test_callback.rb"]
+  s.homepage = %q{http://github.com/methodmissing/callback}
+  s.rdoc_options = ["--main", "README"]
+  s.require_paths = ["lib"]
+  s.rubygems_version = %q{1.3.5}
+  s.summary = %q{Native MRI callback}
+  s.test_files = ["test/test_callback.rb"]
+
+  if s.respond_to? :specification_version then
+    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
+    s.specification_version = 3
+
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    else
+    end
+  else
+  end
 end
