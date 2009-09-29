@@ -13,7 +13,7 @@ Rake::TestTask.new(:test) do |t|
   t.pattern = 'test/test_*.rb'
   t.verbose = true
 end
-task :test => :build
+task :test
 
 namespace :build do
   file "#{CB_ROOT}/mri_callback.c"
@@ -67,4 +67,4 @@ task :bench do |t|
   puts
   ruby "-Ilib:ext/mri_callback:bench", "bench/raggi_bench.rb"
 end
-task :bench => "build"
+task :bench
