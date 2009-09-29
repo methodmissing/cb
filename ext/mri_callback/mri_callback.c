@@ -14,12 +14,12 @@ typedef struct {
 VALUE rb_cCallback;
 static ID id_call;
 
-static void mark_callback(RCallback* cb)
+static void mark_mri_callback(RCallback* cb)
 {
     rb_gc_mark(cb->object);
 }
 
-static void free_callback(RCallback* cb)
+static void free_mri_callback(RCallback* cb)
 {
     xfree(cb);
 }
@@ -30,7 +30,7 @@ callback_alloc( VALUE klass )
 {
 	VALUE cb;
 	RCallback* cbs;
-	cb = Data_Make_Struct(klass, RCallback, mark_callback, free_callback, cbs);
+	cb = Data_Make_Struct(klass, RCallback, mark_mri_callback, free_mri_callback, cbs);
     cbs->object = Qnil;
 	cbs->method = 0;
 	
@@ -38,12 +38,12 @@ callback_alloc( VALUE klass )
 }
 
 static VALUE
-rb_callback_new()
+rb_mri_callback_new()
 {
     return callback_alloc(rb_cCallback);
 }
 
-static VALUE rb_callback_initialize( int argc, VALUE *argv, VALUE cb )
+static VALUE rb_mri_callback_initialize( int argc, VALUE *argv, VALUE cb )
 {
 	VALUE object;
 	VALUE method;
@@ -66,37 +66,20 @@ static VALUE rb_callback_initialize( int argc, VALUE *argv, VALUE cb )
 	return cb;
 }
 
-static VALUE rb_callback_call( VALUE cb, VALUE args )
+static VALUE rb_mri_callback_call( VALUE cb, VALUE args )
 {
 	RCallback* cbs = GetCallbackStruct(cb);
 	return rb_apply(cbs->object, cbs->method, args); 
 }
 
-static VALUE rb_f_callback( int argc, VALUE *argv )
-{
-	return rb_callback_initialize( argc, argv, rb_callback_new() );
-}
-
-static VALUE
-rb_obj_callback( VALUE obj, VALUE mid)
-{
-	VALUE args[2];
-	args[0] = obj;
-	args[1] = mid; 
-	return rb_f_callback( 2, (VALUE *)args );
-}
-
 void
-Init_callback()
+Init_mri_callback()
 {
     id_call = rb_intern("call");
  
     rb_cCallback  = rb_define_class("Callback", rb_cObject);
     rb_define_alloc_func(rb_cCallback, callback_alloc);
     
-    rb_define_method(rb_cCallback,"initialize", rb_callback_initialize, -1);
-    rb_define_method(rb_cCallback,"call", rb_callback_call, -2);
-
-    rb_define_global_function("Callback", rb_f_callback, -1);
-    rb_define_method(rb_mKernel, "callback", rb_obj_callback, 1);
+    rb_define_method(rb_cCallback,"initialize", rb_mri_callback_initialize, -1);
+    rb_define_method(rb_cCallback,"call", rb_mri_callback_call, -2);
 }	

@@ -1,8 +1,42 @@
-$:.unshift "."
-require File.dirname(__FILE__) + '/helper'
+require "test/unit"
+require "callback"
 
-class TestCallback < Test::Unit::TestCase
-  
+class TestCallbackPureRuby < Test::Unit::TestCase
+  def test_Callback_with_lambda
+    ran = false
+    l = lambda { ran = true }
+    Callback(l).call
+    assert ran
+  end
+
+  def cb
+    @ran = true
+  end
+
+  def test_Callback_with_object_and_method
+    @ran = false
+    Callback(self, :cb).call
+    assert @ran
+  end
+
+  def test_Callback_with_block
+    ran = false
+    Callback { ran = true }.call
+    assert ran
+  end
+
+  def test_Callback_with_no_arguments
+    assert_raises(ArgumentError) do
+      Callback()
+    end
+  end
+
+  def test_Object_callback
+    @ran = false
+    self.callback(:cb).call
+    assert @ran
+  end
+
   def test_block
     cb = Callback{ 'hai' }
     assert_equal 'hai', cb.call
@@ -12,7 +46,7 @@ class TestCallback < Test::Unit::TestCase
     cb = Callback( 'bai', :to_s ) 
     assert_equal 'bai', cb.call
   end
-  
+
   def test_init_object_call_with_args
     cb = Callback( 'bai', :gsub )
     assert_equal 'hai', cb.call( 'b', 'h' )
@@ -22,7 +56,7 @@ class TestCallback < Test::Unit::TestCase
     cb = Callback { :foo }
     100_000.times { cb.call }
   end  
- 
+
   def test_arguments
     assert_raises ArgumentError do
       Callback( 'hai' ){}
@@ -35,11 +69,10 @@ class TestCallback < Test::Unit::TestCase
     ocb = 'bai'.callback(:gsub)
     assert_equal 'hai', ocb.call('b', 'h')
   end  
-  
+
   def test_invalid_method
-    assert_raises ArgumentError do
+    assert_raises NameError do
       'str'.callback(:undefined)
     end
   end
-  
 end
