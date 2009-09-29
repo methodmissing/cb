@@ -48,16 +48,6 @@ end
 
 Rake::Task[:clobber].enhance [:clobber_rdoc]
 
-require 'yaml'
-require 'rake/contrib/sshpublisher'
-desc "Publish rdoc to rubyforge"
-task :publish => rdtask.name do
-  rf_cfg = File.expand_path '~/.rubyforge/user-config.yml'
-  host = "#{YAML.load_file(rf_cfg)['username']}@rubyforge.org"
-  remote_dir = "/var/www/gforge-projects/#{spec.rubyforge_project}/#{spec.name}/"
-  Rake::SshDirPublisher.new(host, remote_dir, rdtask.rdoc_dir).upload
-end
-
 desc 'Generate and open documentation'
 task :docs => :rdoc do
   path = rdtask.send :rdoc_target
@@ -95,6 +85,16 @@ task :tag do
 end
 
 if spec.rubyforge_project
+  require 'yaml'
+  require 'rake/contrib/sshpublisher'
+  desc "Publish rdoc to rubyforge"
+  task :publish => rdtask.name do
+    rf_cfg = File.expand_path '~/.rubyforge/user-config.yml'
+    host = "#{YAML.load_file(rf_cfg)['username']}@rubyforge.org"
+    remote_dir = "/var/www/gforge-projects/#{spec.rubyforge_project}/#{spec.name}/"
+    Rake::SshDirPublisher.new(host, remote_dir, rdtask.rdoc_dir).upload
+  end
+
   desc "Release #{gem_task.gem_file} to rubyforge"
   task :release => [:tag, :gem, :publish] do |t|
     sh "rubyforge add_release #{spec.rubyforge_project} #{spec.name} #{spec.version} #{gem_task.package_dir}/#{gem_task.gem_file}"
