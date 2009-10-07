@@ -1,5 +1,5 @@
 require "test/unit"
-require "callback"
+require "cb"
 
 class TestCallbackPureRuby < Test::Unit::TestCase
   def test_Callback_with_lambda
