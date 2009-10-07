@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{callback}
+  s.name = %q{cb}
   s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.extensions = ["ext/mri_callback/extconf.rb"]
   s.extra_rdoc_files = ["README"]
   s.files = ["README", "Rakefile", "bench/bench.rb", "bench/pure_ruby_cb.rb", "bench/raggi_bench.rb", "ext/mri_callback/extconf.rb", "ext/mri_callback/mri_callback.c", "lib/callback.rb", "test/test_callback.rb"]
-  s.homepage = %q{http://github.com/methodmissing/callback}
+  s.homepage = %q{http://github.com/methodmissing/cb}
   s.rdoc_options = ["--main", "README"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
