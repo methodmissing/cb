@@ -11,13 +11,13 @@ Gem::Specification.new do |s|
   s.email = %q{lourens@methodmissing.com}
   s.extensions = ["ext/mri_callback/extconf.rb"]
   s.extra_rdoc_files = ["README"]
-  s.files = ["README", "Rakefile", "bench/bench.rb", "bench/pure_ruby_cb.rb", "bench/raggi_bench.rb", "ext/mri_callback/extconf.rb", "ext/mri_callback/mri_callback.c", "lib/callback.rb", "test/test_callback.rb"]
+  s.files = ["README", "Rakefile", "bench/bench.rb", "bench/pure_ruby_cb.rb", "bench/raggi_bench.rb", "ext/mri_callback/extconf.rb", "ext/mri_callback/mri_callback.c", "lib/cb.rb", "test/test_cb.rb"]
   s.homepage = %q{http://github.com/methodmissing/cb}
   s.rdoc_options = ["--main", "README"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Native MRI callback}
-  s.test_files = ["test/test_callback.rb"]
+  s.test_files = ["test/test_cb.rb"]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
