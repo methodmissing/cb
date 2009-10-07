@@ -1,7 +1,7 @@
 Simple native Callback object for Ruby MRI
   (c) 2009 Lourens Naudé (methodmissing), James Tucker (raggi) and coderrr
  
-  http://github.com/methodmissing/callback
+  http://github.com/methodmissing/cb
 
 This library works with Ruby 1.8 and 1.9 and is a more efficient
 implementation of the following Ruby code :
